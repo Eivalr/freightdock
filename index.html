@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreightDock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-mark">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M2 6L10 2L18 6V14L10 18L2 14V6Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M10 2V18M2 6L18 14M18 6L2 14" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="logo-text">FreightDock</span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <span class="nav-label">Workspace</span>
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+              <rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+              <rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+              <rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-page="loader">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M2 14L10 4L18 14H2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M6 14V17M14 14V17M4 17H16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <span>3D Loader</span>
+          </a>
+          <a href="#" class="nav-item" data-page="rates">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M7 4.5L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+            <span>Rate Finder</span>
+            <span class="nav-badge">Soon</span>
+          </a>
+          <a href="#" class="nav-item" data-page="converter">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M4 7H14M14 7L11 4M14 7L11 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 13H6M6 13L9 10M6 13L9 16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Unit Converter</span>
+          </a>
+          <a href="#" class="nav-item" data-page="library">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M4 3H8V17H4V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M9 3H13V17H9V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M14 5L17.5 6.5V17L14 15.5V5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+            <span>Library</span>
+            <span class="nav-badge">Soon</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-label">Intelligence</span>
+          <a href="#" class="nav-item" data-page="docai">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M5 3H12L16 7V17H5V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M12 3V7H16" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M8 11H13M8 14H11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="15" cy="15" r="3" fill="var(--accent)" opacity="0.9"/>
+              <path d="M14 15L14.8 15.8L16.2 14.2" stroke="white" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <span>Doc AI</span>
+            <span class="nav-badge new">New</span>
+          </a>
+          <a href="#" class="nav-item" data-page="crm">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M2 17C2 14.2386 4.68629 12 8 12C9.16 12 10.24 12.32 11.14 12.87" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="15" cy="14" r="3.5" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M15 12.5V14L16 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <span>CRM</span>
+            <span class="nav-badge">Soon</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" data-page="settings">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M10 3V5M10 15V17M3 10H5M15 10H17M4.93 4.93L6.34 6.34M13.66 13.66L15.07 15.07M15.07 4.93L13.66 6.34M6.34 13.66L4.93 15.07" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span>Settings</span>
+        </a>
+        <div class="user-card">
+          <div class="user-avatar">VS</div>
+          <div class="user-info">
+            <span class="user-name">Vasileios S.</span>
+            <span class="user-role">Marinair Cargo</span>
+          </div>
+          <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+            <svg class="icon-sun" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M7 1V2.5M7 11.5V13M1 7H2.5M11.5 7H13M2.93 2.93L3.99 3.99M10.01 10.01L11.07 11.07M11.07 2.93L10.01 3.99M3.99 10.01L2.93 11.07" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <svg class="icon-moon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M12 8.5A6 6 0 015.5 2C2.46 2 0 4.46 0 7.5a6 6 0 006 6c2.76 0 5.08-1.87 5.8-4.42-.6.27-1.24.42-1.8.42z" fill="currentColor" opacity="0.8"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main id="main" class="main">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-open-btn" id="sidebarOpenBtn" style="display:none">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2 4.5H16M2 9H16M2 13.5H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="breadcrumb" id="breadcrumb">
+            <span>Dashboard</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <input type="text" placeholder="Search anything..." />
+            <span class="search-kbd">⌘K</span>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-btn" title="Notifications">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2C5.79 2 4 3.79 4 6V10L2 12H14L12 10V6C12 3.79 10.21 2 8 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                <path d="M6.5 13C6.5 13.83 7.17 14.5 8 14.5C8.83 14.5 9.5 13.83 9.5 13" stroke="currentColor" stroke-width="1.3"/>
+              </svg>
+              <span class="notif-dot"></span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT AREA -->
+      <div class="page-content" id="pageContent">
+
+        <!-- DASHBOARD PAGE -->
+        <div class="page active" id="page-dashboard">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Good morning, Vasileios</h1>
+              <p class="page-subtitle">Here's what's happening at Marinair today</p>
+            </div>
+            <div class="page-header-actions">
+              <span class="date-chip" id="currentDate"></span>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--blue">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <rect x="1" y="5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M5 5V4C5 2.9 5.9 2 7 2H11C12.1 2 13 2.9 13 4V5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M1 10H17" stroke="currentColor" stroke-width="1.4"/>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <span class="stat-label">Active Shipments</span>
+                <span class="stat-value">—</span>
+              </div>
+              <span class="stat-trend neutral">Live data soon</span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--amber">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M9 5V9L12 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <span class="stat-label">Pending Quotes</span>
+                <span class="stat-value">—</span>
+              </div>
+              <span class="stat-trend neutral">CRM coming</span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--green">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M3 9L7 13L15 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <span class="stat-label">Docs Processed</span>
+                <span class="stat-value">—</span>
+              </div>
+              <span class="stat-trend neutral">Doc AI ready</span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--red">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 2L2 16H16L9 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                  <path d="M9 8V11M9 13.5V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="stat-body">
+                <span class="stat-label">Alerts</span>
+                <span class="stat-value">0</span>
+              </div>
+              <span class="stat-trend positive">All clear</span>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="dash-card tools-card">
+              <div class="card-header">
+                <span class="card-title">Quick Access</span>
+                <span class="card-subtitle">Your tools</span>
+              </div>
+              <div class="tools-grid">
+                <button class="tool-btn" data-page="loader">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <path d="M2 14L10 4L18 14H2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                    <path d="M6 14V17M14 14V17M4 17H16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>3D Loader</span>
+                </button>
+                <button class="tool-btn" data-page="converter">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 7H14M14 7L11 4M14 7L11 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 13H6M6 13L9 10M6 13L9 16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Converter</span>
+                </button>
+                <button class="tool-btn" data-page="docai">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 3H12L16 7V17H5V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                    <path d="M12 3V7H16" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M8 11H13M8 14H11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>Doc AI</span>
+                </button>
+                <button class="tool-btn disabled">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>Rates</span>
+                </button>
+                <button class="tool-btn disabled">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 3H8V17H4V3ZM9 3H13V17H9V3ZM14 5L17.5 6.5V17L14 15.5V5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Library</span>
+                </button>
+                <button class="tool-btn disabled">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M2 17C2 14.24 4.69 12 8 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <circle cx="15" cy="14" r="3.5" stroke="currentColor" stroke-width="1.4"/>
+                  </svg>
+                  <span>CRM</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="dash-card activity-card">
+              <div class="card-header">
+                <span class="card-title">Recent Activity</span>
+                <button class="card-action">View all</button>
+              </div>
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="activity-dot dot--blue"></div>
+                  <div class="activity-body">
+                    <span class="activity-text">FreightDock initialized</span>
+                    <span class="activity-time">Just now</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot dot--green"></div>
+                  <div class="activity-body">
+                    <span class="activity-text">3D Loader module ready</span>
+                    <span class="activity-time">Today</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot dot--amber"></div>
+                  <div class="activity-body">
+                    <span class="activity-text">Rate Finder — coming soon</span>
+                    <span class="activity-time">Roadmap</span>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot dot--amber"></div>
+                  <div class="activity-body">
+                    <span class="activity-text">CRM module — coming soon</span>
+                    <span class="activity-time">Roadmap</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-card status-card">
+              <div class="card-header">
+                <span class="card-title">Module Status</span>
+              </div>
+              <div class="module-list">
+                <div class="module-row">
+                  <span class="module-name">3D Loader</span>
+                  <span class="module-status status--live">Live</span>
+                </div>
+                <div class="module-row">
+                  <span class="module-name">Unit Converter</span>
+                  <span class="module-status status--live">Live</span>
+                </div>
+                <div class="module-row">
+                  <span class="module-name">Doc AI</span>
+                  <span class="module-status status--beta">Beta</span>
+                </div>
+                <div class="module-row">
+                  <span class="module-name">Rate Finder</span>
+                  <span class="module-status status--soon">Soon</span>
+                </div>
+                <div class="module-row">
+                  <span class="module-name">Library</span>
+                  <span class="module-status status--soon">Soon</span>
+                </div>
+                <div class="module-row">
+                  <span class="module-name">CRM</span>
+                  <span class="module-status status--soon">Soon</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D LOADER PAGE -->
+        <div class="page" id="page-loader">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">3D Container Loader</h1>
+              <p class="page-subtitle">Optimize cargo placement with 3D visualization</p>
+            </div>
+          </div>
+          <div class="embed-frame">
+            <div class="embed-placeholder">
+              <svg width="48" height="48" viewBox="0 0 20 20" fill="none" opacity="0.3">
+                <path d="M2 14L10 4L18 14H2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                <path d="M6 14V17M14 14V17M4 17H16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <p>3D Loader App</p>
+              <span>Deploy your existing 6-file loader app and link it here, or embed it via iframe once hosted on GitHub Pages.</span>
+              <a href="https://github.com/Eivalr" target="_blank" class="btn-primary">Open GitHub Repo ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- RATE FINDER PAGE -->
+        <div class="page" id="page-rates">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Rate Finder</h1>
+              <p class="page-subtitle">Search and compare carrier rates across lanes</p>
+            </div>
+            <span class="coming-badge">Coming Soon</span>
+          </div>
+          <div class="coming-soon-frame">
+            <svg width="56" height="56" viewBox="0 0 20 20" fill="none" opacity="0.2">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <h3>Rate Finder is in development</h3>
+            <p>Compare FCL / LCL / Air rates across carriers and lanes. Upload rate sheets, get instant margin analysis.</p>
+          </div>
+        </div>
+
+        <!-- UNIT CONVERTER PAGE -->
+        <div class="page" id="page-converter">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Unit Converter</h1>
+              <p class="page-subtitle">Convert freight-relevant units instantly</p>
+            </div>
+          </div>
+          <div class="converter-layout">
+            <div class="converter-card">
+              <div class="converter-tabs">
+                <button class="conv-tab active" data-conv="weight">Weight</button>
+                <button class="conv-tab" data-conv="volume">Volume</button>
+                <button class="conv-tab" data-conv="length">Length</button>
+                <button class="conv-tab" data-conv="cbm">CBM / RT</button>
+                <button class="conv-tab" data-conv="temp">Temperature</button>
+              </div>
+              <div class="converter-body" id="converterBody">
+                <!-- Dynamically filled -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIBRARY PAGE -->
+        <div class="page" id="page-library">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Library</h1>
+              <p class="page-subtitle">Incoterms, conventions, HS codes, port guides</p>
+            </div>
+            <span class="coming-badge">Coming Soon</span>
+          </div>
+          <div class="coming-soon-frame">
+            <svg width="56" height="56" viewBox="0 0 20 20" fill="none" opacity="0.2">
+              <path d="M4 3H8V17H4V3ZM9 3H13V17H9V3ZM14 5L17.5 6.5V17L14 15.5V5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            <h3>Library is in development</h3>
+            <p>Incoterms 2020 reference, Hague-Visby, CMR, HS code lookup, port guides for your key lanes.</p>
+          </div>
+        </div>
+
+        <!-- DOC AI PAGE -->
+        <div class="page" id="page-docai">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Doc AI</h1>
+              <p class="page-subtitle">Analyze and validate freight documents with AI</p>
+            </div>
+            <span class="beta-badge">Beta</span>
+          </div>
+          <div class="docai-layout">
+            <div class="docai-upload-zone" id="docDropZone">
+              <svg width="40" height="40" viewBox="0 0 20 20" fill="none" opacity="0.4">
+                <path d="M5 3H12L16 7V17H5V3Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                <path d="M12 3V7H16" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M10 10V15M8 12L10 10L12 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="upload-title">Drop a document here</p>
+              <p class="upload-sub">Bill of Lading, Invoice, Packing List, AWB — PDF or image</p>
+              <button class="btn-primary" onclick="document.getElementById('docFileInput').click()">Browse files</button>
+              <input type="file" id="docFileInput" accept=".pdf,.png,.jpg,.jpeg" style="display:none" onchange="handleDocUpload(event)">
+            </div>
+            <div class="docai-result" id="docaiResult" style="display:none">
+              <div class="result-header">
+                <span id="docFileName" class="doc-filename"></span>
+                <button class="btn-ghost" onclick="resetDocAI()">✕ Clear</button>
+              </div>
+              <div class="result-body" id="docResultBody">
+                <div class="ai-thinking">
+                  <div class="thinking-dots"><span></span><span></span><span></span></div>
+                  <span>Analyzing document...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRM PAGE -->
+        <div class="page" id="page-crm">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">CRM</h1>
+              <p class="page-subtitle">Manage partners, clients and leads</p>
+            </div>
+            <span class="coming-badge">Coming Soon</span>
+          </div>
+          <div class="coming-soon-frame">
+            <svg width="56" height="56" viewBox="0 0 20 20" fill="none" opacity="0.2">
+              <circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M2 17C2 14.24 4.69 12 8 12C9.16 12 10.24 12.32 11.14 12.87" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="15" cy="14" r="3.5" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            <h3>CRM is in development</h3>
+            <p>Partner profiles, lead pipeline, quote history, contact management — built for freight forwarder workflows.</p>
+          </div>
+        </div>
+
+        <!-- SETTINGS PAGE -->
+        <div class="page" id="page-settings">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Settings</h1>
+              <p class="page-subtitle">Configure FreightDock to your workflow</p>
+            </div>
+          </div>
+          <div class="settings-layout">
+            <div class="settings-section">
+              <h3 class="settings-section-title">Appearance</h3>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span>Theme</span>
+                  <small>Light or dark interface</small>
+                </div>
+                <div class="settings-control">
+                  <button class="theme-pill" id="themeBtn" onclick="toggleTheme()">
+                    <span id="themeBtnLabel">Dark mode</span>
+                  </button>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span>Sidebar</span>
+                  <small>Default collapsed or expanded</small>
+                </div>
+                <div class="settings-control">
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked id="sidebarDefault">
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-section-title">Profile</h3>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span>Name</span>
+                  <small>Displayed in sidebar</small>
+                </div>
+                <div class="settings-control">
+                  <input type="text" class="settings-input" value="Vasileios S." />
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span>Company</span>
+                </div>
+                <div class="settings-control">
+                  <input type="text" class="settings-input" value="Marinair Cargo Services" />
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-section-title">Modules</h3>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span>3D Loader URL</span>
+                  <small>Link to your deployed loader app</small>
+                </div>
+                <div class="settings-control">
+                  <input type="text" class="settings-input" placeholder="https://eivalr.github.io/loader" id="loaderUrl"/>
+                </div>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label">
+                  <span>Doc AI</span>
+                  <small>Enable AI document analysis</small>
+                </div>
+                <div class="settings-control">
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <h3 class="settings-section-title">About</h3>
+              <div class="settings-row">
+                <div class="settings-label"><span>Version</span></div>
+                <div class="settings-control"><span class="settings-value">FreightDock v1.0.0-shell</span></div>
+              </div>
+              <div class="settings-row">
+                <div class="settings-label"><span>Build</span></div>
+                <div class="settings-control"><span class="settings-value">GitHub Pages · No backend</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /page-content -->
+    </main>
+  </div><!-- /app -->
+
+<script src="app.js"></script>
+</body>
+</html>
