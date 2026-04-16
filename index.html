@@ -50,6 +50,14 @@
             </svg>
             <span>3D Loader</span>
           </a>
+          <a href="#" class="nav-item" data-page="tracker">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/>
+              <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M10 3V6M10 14V17M3 10H6M14 10H17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <span>Tracker</span>
+          </a>
           <a href="#" class="nav-item" data-page="rates">
             <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
               <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
@@ -250,6 +258,14 @@
                   </svg>
                   <span>3D Loader</span>
                 </button>
+                <button class="tool-btn" data-page="tracker">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/>
+                    <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M10 3V6M10 14V17M3 10H6M14 10H17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                  <span>Tracker</span>
+                </button>
                 <button class="tool-btn" data-page="converter">
                   <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
                     <path d="M4 7H14M14 7L11 4M14 7L11 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -336,6 +352,10 @@
                   <span class="module-status status--live">Live</span>
                 </div>
                 <div class="module-row">
+                  <span class="module-name">Tracker</span>
+                  <span class="module-status status--live">Live</span>
+                </div>
+                <div class="module-row">
                   <span class="module-name">Unit Converter</span>
                   <span class="module-status status--live">Live</span>
                 </div>
@@ -377,6 +397,67 @@
               <p>3D Loader App</p>
               <span>Deploy your existing 6-file loader app and link it here, or embed it via iframe once hosted on GitHub Pages.</span>
               <a href="https://eivalr.github.io/autoload3d/index.html" target="_blank" class="btn-primary">Open 3D Loader ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRACKER PAGE -->
+        <div class="page" id="page-tracker">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Shipment Tracker</h1>
+              <p class="page-subtitle">Track containers and B/L numbers across major carriers</p>
+            </div>
+          </div>
+
+          <div class="tracker-layout">
+            <!-- SEARCH -->
+            <div class="tracker-search-card">
+              <div class="tracker-search-row">
+                <div class="tracker-input-wrap">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;color:var(--text-3)">
+                    <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M10 3V6M10 14V17M3 10H6M14 10H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  <input type="text" id="trackerInput" class="tracker-input"
+                    placeholder="Enter container no. or B/L  (e.g. MSCU1234567 or MAEU123456789)"
+                    autocomplete="off" spellcheck="false"
+                    oninput="trackerOnInput()" onkeydown="if(event.key==='Enter')trackerSearch()">
+                  <div class="tracker-detected" id="trackerDetected" style="display:none">
+                    <span id="trackerDetectedName"></span>
+                  </div>
+                  <button class="tracker-clear" id="trackerClear" style="display:none" onclick="trackerClearInput()">✕</button>
+                </div>
+                <div class="tracker-type-toggle">
+                  <button class="type-btn active" id="typeBtnCont" onclick="setTrackType('container')">Container</button>
+                  <button class="type-btn" id="typeBtnBL" onclick="setTrackType('bl')">B/L</button>
+                </div>
+                <button class="tracker-btn" onclick="trackerSearch()">
+                  Track
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+              <p class="tracker-hint" id="trackerHint">Carrier is detected automatically from container prefix. For B/L numbers, select carrier below.</p>
+            </div>
+
+            <!-- CARRIER GRID -->
+            <div class="carrier-section">
+              <p class="carrier-section-label">Select carrier for B/L tracking, or track directly:</p>
+              <div class="carrier-grid" id="carrierGrid">
+                <!-- filled by JS -->
+              </div>
+            </div>
+
+            <!-- RECENT -->
+            <div class="tracker-recent" id="trackerRecent" style="display:none">
+              <div class="card-header" style="margin-bottom:12px">
+                <span class="card-title">Recent Searches</span>
+                <button class="card-action" onclick="clearRecentSearches()">Clear</button>
+              </div>
+              <div class="recent-list" id="recentList"></div>
             </div>
           </div>
         </div>
@@ -595,6 +676,7 @@
     </main>
   </div><!-- /app -->
 
+<script src="tracker-data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

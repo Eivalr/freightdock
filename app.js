@@ -469,3 +469,163 @@ function resetDocAI() {
 // ── INIT ───────────────────────────────────────────────────
 buildConverter('weight');
 navigate('dashboard');
+
+// ── TRACKER ────────────────────────────────────────────────
+let trackType = 'container';
+let selectedCarrier = null;
+
+function setTrackType(type) {
+  trackType = type;
+  document.getElementById('typeBtnCont').classList.toggle('active', type === 'container');
+  document.getElementById('typeBtnBL').classList.toggle('active', type === 'bl');
+  const hint = document.getElementById('trackerHint');
+  if (type === 'bl') {
+    hint.textContent = 'Enter your B/L number and select the carrier below.';
+  } else {
+    hint.textContent = 'Carrier is detected automatically from container prefix. For B/L numbers, select carrier below.';
+  }
+  trackerOnInput();
+}
+
+function trackerOnInput() {
+  const val = document.getElementById('trackerInput').value.trim();
+  const clearBtn = document.getElementById('trackerClear');
+  const detectedEl = document.getElementById('trackerDetected');
+  const detectedName = document.getElementById('trackerDetectedName');
+
+  clearBtn.style.display = val ? 'block' : 'none';
+
+  if (trackType === 'container' && val.length >= 4) {
+    const carrier = detectCarrier(val);
+    if (carrier) {
+      detectedEl.style.display = 'flex';
+      detectedName.textContent = carrier.name + ' ✓';
+      selectedCarrier = carrier;
+    } else {
+      detectedEl.style.display = 'none';
+      selectedCarrier = null;
+    }
+  } else {
+    detectedEl.style.display = 'none';
+  }
+}
+
+function trackerClearInput() {
+  document.getElementById('trackerInput').value = '';
+  document.getElementById('trackerClear').style.display = 'none';
+  document.getElementById('trackerDetected').style.display = 'none';
+  selectedCarrier = null;
+}
+
+function trackerSearch() {
+  const val = document.getElementById('trackerInput').value.trim().toUpperCase();
+  if (!val) {
+    document.getElementById('trackerInput').focus();
+    return;
+  }
+
+  let carrier = selectedCarrier;
+
+  if (trackType === 'container') {
+    carrier = detectCarrier(val) || carrier;
+    if (!carrier) {
+      alert('Could not detect carrier from container prefix. Please select a carrier from the grid below, or switch to B/L mode.');
+      return;
+    }
+    const url = carrier.containerUrl.replace('{ID}', val);
+    openTracking(url, val, carrier.name, 'Container');
+  } else {
+    if (!carrier) {
+      alert('Please select a carrier from the grid below for B/L tracking.');
+      return;
+    }
+    const url = carrier.blUrl.replace('{ID}', val);
+    openTracking(url, val, carrier.name, 'B/L');
+  }
+}
+
+function openTracking(url, ref, carrierName, type) {
+  saveRecentSearch(ref, carrierName, type);
+  window.open(url, '_blank', 'noopener');
+  renderRecentSearches();
+}
+
+function saveRecentSearch(ref, carrier, type) {
+  const recent = JSON.parse(localStorage.getItem('fd-tracker-recent') || '[]');
+  const entry = { ref, carrier, type, ts: Date.now() };
+  const filtered = recent.filter(r => r.ref !== ref);
+  filtered.unshift(entry);
+  localStorage.setItem('fd-tracker-recent', JSON.stringify(filtered.slice(0, 10)));
+}
+
+function renderRecentSearches() {
+  const recent = JSON.parse(localStorage.getItem('fd-tracker-recent') || '[]');
+  const container = document.getElementById('trackerRecent');
+  const list = document.getElementById('recentList');
+  if (!recent.length) { container.style.display = 'none'; return; }
+  container.style.display = 'block';
+  list.innerHTML = recent.map(r => `
+    <div class="recent-item" onclick="reTrack('${r.ref}','${r.carrier}','${r.type}')">
+      <span class="recent-ref">${r.ref}</span>
+      <div class="recent-meta">
+        <span class="recent-carrier">${r.carrier}</span>
+        <span class="recent-type">${r.type}</span>
+        <span class="recent-open">Track ↗</span>
+      </div>
+    </div>`).join('');
+}
+
+function reTrack(ref, carrierName, type) {
+  const carrier = window.CARRIERS.find(c => c.name === carrierName);
+  if (!carrier) return;
+  const url = type === 'B/L' ? carrier.blUrl.replace('{ID}', ref) : carrier.containerUrl.replace('{ID}', ref);
+  window.open(url, '_blank', 'noopener');
+}
+
+function clearRecentSearches() {
+  localStorage.removeItem('fd-tracker-recent');
+  renderRecentSearches();
+}
+
+function buildCarrierGrid() {
+  const grid = document.getElementById('carrierGrid');
+  if (!grid || !window.CARRIERS) return;
+  grid.innerHTML = window.CARRIERS.map(c => `
+    <div class="carrier-card" id="carrier-${c.code}" onclick="selectCarrier('${c.code}')">
+      <div class="carrier-avatar" style="background:${c.color}">${c.logo}</div>
+      <span class="carrier-name">${c.name}</span>
+      <span class="carrier-track-btn">Select</span>
+    </div>`).join('');
+}
+
+function selectCarrier(code) {
+  selectedCarrier = window.CARRIERS.find(c => c.code === code);
+  document.querySelectorAll('.carrier-card').forEach(el => el.classList.remove('selected'));
+  document.getElementById('carrier-' + code)?.classList.add('selected');
+
+  if (trackType === 'container') {
+    const val = document.getElementById('trackerInput').value.trim();
+    if (val) {
+      const url = selectedCarrier.containerUrl.replace('{ID}', val.toUpperCase());
+      openTracking(url, val.toUpperCase(), selectedCarrier.name, 'Container');
+    }
+  }
+}
+
+// Init tracker when page becomes visible
+const origNavigate = navigate;
+// Re-init on tracker page load
+document.querySelectorAll('.nav-item[data-page="tracker"], .tool-btn[data-page="tracker"]').forEach(el => {
+  el.addEventListener('click', () => {
+    setTimeout(() => {
+      buildCarrierGrid();
+      renderRecentSearches();
+    }, 50);
+  });
+});
+
+// Also init if tracker is default page
+if (document.getElementById('page-tracker')?.classList.contains('active')) {
+  buildCarrierGrid();
+  renderRecentSearches();
+}
