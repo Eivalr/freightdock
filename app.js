@@ -71,7 +71,7 @@ function toggleTheme() {
   if (btn) btn.textContent = isDark ? 'Light mode' : 'Dark mode';
 }
 
-const savedTheme = localStorage.getItem('fd-theme');
+const savedTheme = localStorage.getItem('fd-theme') || 'light';
 if (savedTheme) {
   document.documentElement.setAttribute('data-theme', savedTheme);
   const btn = document.getElementById('themeBtnLabel');
