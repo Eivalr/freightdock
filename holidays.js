@@ -22,12 +22,12 @@ function wh_initPage(){
   root.dataset.init='1';
   root.innerHTML = `
     <div class="holidays-layout">
-      <div id="wh-map-wrap" class="holidays-map-wrap">
+      <div class="holidays-map-wrap" id="wh-map-wrap">
         <div id="wh-loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;color:var(--text-3)">Loading...</div>
         <svg id="wh-svg" viewBox="0 0 960 500" style="width:100%;display:block;flex:1;"></svg>
-        <div id="wh-tt" style="position:absolute;background:var(--surface-1);border:1px solid var(--border);border-radius:var(--radius-md);padding:7px 10px;font-size:12px;pointer-events:none;display:none;max-width:200px;z-index:10;">
-          <strong id="wh-tt-c" style="display:block;font-size:13px;margin-bottom:3px;color:var(--text-1)"></strong>
-          <span id="wh-tt-i" style="color:var(--text-2);white-space:pre-line;line-height:1.5;font-size:11px;"></span>
+        <div id="wh-tt" style="position:absolute;background:var(--bg-1);border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;font-size:12px;pointer-events:none;display:none;max-width:200px;z-index:10;">
+          <strong id="wh-tt-c" style="display:block;font-size:13px;margin-bottom:3px;color:var(--text);font-family:var(--font)"></strong>
+          <span id="wh-tt-i" style="color:var(--text-2);white-space:pre-line;line-height:1.5;font-size:11px;font-family:var(--font)"></span>
         </div>
         <div class="wh-legend">
           <span class="wh-leg"><span class="wh-dot" style="background:#378ADD"></span>Holiday today</span>
@@ -50,7 +50,7 @@ function wh_initPage(){
           <input class="wh-search" id="wh-q" placeholder="Search..." oninput="wh_render()">
           <div class="wh-list" id="wh-list"></div>
         </div>
-        <div id="wh-det" style="display:none;flex:1;overflow-y:auto;padding:12px;">
+        <div id="wh-det" style="display:none;flex:1;overflow-y:auto;padding:14px;">
           <div id="wh-det-inner"></div>
         </div>
       </div>
@@ -85,7 +85,7 @@ function wh_initMap(){
       .data(topojson.feature(world,world.objects.countries).features)
       .join('path').attr('class','wh-country')
       .attr('d',path).attr('fill','var(--border-2)')
-      .style('cursor','pointer').style('stroke','var(--surface-1)').style('stroke-width','0.4')
+      .style('cursor','pointer').style('stroke','var(--bg-1)').style('stroke-width','0.4')
       .on('mousemove',function(ev,d){
         const cc=WH_N2I[+d.id];
         const sr=document.getElementById('wh-svg').getBoundingClientRect();
@@ -170,10 +170,10 @@ function wh_render(){
   if(!list) return;
   if(!rows.length){ list.innerHTML='<div style="padding:20px;text-align:center;font-size:13px;color:var(--text-3)">No holidays found.</div>'; return; }
   list.innerHTML=rows.map(h=>{
-    if(h._empty) return '<div style="padding:8px 12px;opacity:0.4;border-bottom:1px solid var(--border)"><div style="font-size:12px;font-weight:500;color:var(--text-1)">'+wh_cname(h.countryCode)+'</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">No holiday this week</div></div>';
+    if(h._empty) return '<div class="wh-item" style="opacity:0.4;cursor:default"><div class="wh-item-name">'+wh_cname(h.countryCode)+'</div><div class="wh-item-sub">No holiday this week</div></div>';
     const isT=h.date===td, isB=(h.types||[]).includes('Bank'), isN=h.global;
     const badges=(isT?'<span class="wh-badge wh-b-today">today</span>':'')+(isB?'<span class="wh-badge wh-b-bank">bank</span>':'')+(isN?'<span class="wh-badge wh-b-nat">national</span>':'');
-    return '<div class="wh-item" onclick="wh_showDetail(\''+h.countryCode+'\')"><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:12px;font-weight:500;color:var(--text-1)">'+wh_cname(h.countryCode)+'</span>'+badges+'</div><div style="font-size:11px;color:var(--text-2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+h.name+(h.localName&&h.localName!==h.name?' - '+h.localName:'')+'</div><div style="font-size:10px;color:var(--text-3);margin-top:1px;">'+h.date+'</div></div>';
+    return '<div class="wh-item" onclick="wh_showDetail(\''+h.countryCode+'\')"><div class="wh-item-top"><span class="wh-item-name">'+wh_cname(h.countryCode)+'</span>'+badges+'</div><div class="wh-item-sub">'+h.name+(h.localName&&h.localName!==h.name?' - '+h.localName:'')+'</div><div class="wh-item-date">'+h.date+'</div></div>';
   }).join('');
 }
 
@@ -182,17 +182,17 @@ function wh_showDetail(cc){
   const td=wh_toDS(new Date()),{mon,sun}=wh_weekRange();
   const thH=wh_all.filter(h=>h.countryCode===cc&&h.date===td);
   const twH=wh_all.filter(h=>{ const d=new Date(h.date+'T00:00:00'); return h.countryCode===cc&&d>=mon&&d<=sun&&h.date!==td; });
-  let html='<button onclick="wh_backToList()" style="background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px 10px;font-size:11px;cursor:pointer;color:var(--text-2);margin-bottom:10px;">back</button>'
-    +'<p style="font-size:14px;font-weight:600;color:var(--text-1);margin:0 0 8px;">'+wh_cname(cc)+'</p>';
+  let html='<button class="wh-back-btn" onclick="wh_backToList()">back</button>'
+    +'<p class="wh-detail-title">'+wh_cname(cc)+'</p>';
   if(thH.length){
-    html+='<div style="font-size:10px;font-weight:600;letter-spacing:0.04em;color:#185FA5;margin:8px 0 5px;">TODAY</div>';
-    html+=thH.map(h=>'<div style="padding:6px 0;border-bottom:1px solid var(--border)"><div style="font-size:12px;font-weight:500;color:var(--text-1)">'+h.name+'</div>'+(h.localName&&h.localName!==h.name?'<div style="font-size:11px;color:var(--text-2);font-style:italic">'+h.localName+'</div>':'')+'<div style="font-size:10px;color:var(--text-3);margin-top:2px;">'+h.date+' - '+(h.types||['Public']).join(', ')+'</div></div>').join('');
+    html+='<div class="wh-detail-section-label" style="color:var(--accent-2)">Today</div>';
+    html+=thH.map(h=>'<div class="wh-detail-item"><div class="wh-detail-name">'+h.name+'</div>'+(h.localName&&h.localName!==h.name?'<div class="wh-detail-local">'+h.localName+'</div>':'')+'<div class="wh-detail-meta">'+h.date+' - '+(h.types||['Public']).join(', ')+'</div></div>').join('');
   }
   if(twH.length){
-    html+='<div style="font-size:10px;font-weight:600;letter-spacing:0.04em;color:#3B6D11;margin:10px 0 5px;">THIS WEEK</div>';
-    html+=twH.map(h=>'<div style="padding:6px 0;border-bottom:1px solid var(--border)"><div style="font-size:12px;font-weight:500;color:var(--text-1)">'+h.name+'</div>'+(h.localName&&h.localName!==h.name?'<div style="font-size:11px;color:var(--text-2);font-style:italic">'+h.localName+'</div>':'')+'<div style="font-size:10px;color:var(--text-3);margin-top:2px;">'+h.date+' - '+(h.types||['Public']).join(', ')+'</div></div>').join('');
+    html+='<div class="wh-detail-section-label" style="color:var(--green)">This week</div>';
+    html+=twH.map(h=>'<div class="wh-detail-item"><div class="wh-detail-name">'+h.name+'</div>'+(h.localName&&h.localName!==h.name?'<div class="wh-detail-local">'+h.localName+'</div>':'')+'<div class="wh-detail-meta">'+h.date+' - '+(h.types||['Public']).join(', ')+'</div></div>').join('');
   }
-  if(!thH.length&&!twH.length) html+='<div style="padding:16px 0;text-align:center;font-size:12px;color:var(--text-3)">No holidays today or this week.</div>';
+  if(!thH.length&&!twH.length) html+='<div style="padding:16px 0;text-align:center;font-size:13px;color:var(--text-3)">No holidays today or this week.</div>';
   document.getElementById('wh-det-inner').innerHTML=html;
   document.getElementById('wh-main').style.display='none';
   document.getElementById('wh-det').style.display='block';
@@ -204,7 +204,6 @@ function wh_backToList(){
   document.getElementById('wh-det').style.display='none';
 }
 
-// Init when holidays page nav item is clicked
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.nav-item[data-page="holidays"], .tool-btn[data-page="holidays"]').forEach(el=>{
     el.addEventListener('click',()=>setTimeout(wh_initPage,50));
