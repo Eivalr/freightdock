@@ -98,6 +98,15 @@
             <span>Doc AI</span>
             <span class="nav-badge new">New</span>
           </a>
+          <a href="#" class="nav-item" data-page="holidays">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M6 2V5M14 2V5M2 8H18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="7" cy="13" r="1.2" fill="currentColor"/>
+              <circle cx="13" cy="13" r="1.2" fill="currentColor"/>
+            </svg>
+            <span>Holidays</span>
+          </a>
           <a href="#" class="nav-item" data-page="crm">
             <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
               <circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/>
@@ -281,6 +290,15 @@
                   </svg>
                   <span>Doc AI</span>
                 </button>
+                <button class="tool-btn" data-page="holidays">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <rect x="2" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M6 2V5M14 2V5M2 8H18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <circle cx="7" cy="13" r="1.2" fill="currentColor"/>
+                    <circle cx="13" cy="13" r="1.2" fill="currentColor"/>
+                  </svg>
+                  <span>Holidays</span>
+                </button>
                 <button class="tool-btn disabled">
                   <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
                     <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
@@ -326,10 +344,10 @@
                   </div>
                 </div>
                 <div class="activity-item">
-                  <div class="activity-dot dot--amber"></div>
+                  <div class="activity-dot dot--green"></div>
                   <div class="activity-body">
-                    <span class="activity-text">Rate Finder — coming soon</span>
-                    <span class="activity-time">Roadmap</span>
+                    <span class="activity-text">World Holidays module live</span>
+                    <span class="activity-time">Today</span>
                   </div>
                 </div>
                 <div class="activity-item">
@@ -362,6 +380,10 @@
                 <div class="module-row">
                   <span class="module-name">Doc AI</span>
                   <span class="module-status status--beta">Beta</span>
+                </div>
+                <div class="module-row">
+                  <span class="module-name">Holidays</span>
+                  <span class="module-status status--live">Live</span>
                 </div>
                 <div class="module-row">
                   <span class="module-name">Rate Finder</span>
@@ -406,9 +428,7 @@
               <p class="page-subtitle">Track containers and B/L numbers across major carriers</p>
             </div>
           </div>
-
           <div class="tracker-layout">
-            <!-- SEARCH -->
             <div class="tracker-search-card">
               <div class="tracker-search-row">
                 <div class="tracker-input-wrap">
@@ -424,7 +444,7 @@
                   <div class="tracker-detected" id="trackerDetected" style="display:none">
                     <span id="trackerDetectedName"></span>
                   </div>
-                  <button class="tracker-clear" id="trackerClear" style="display:none" onclick="trackerClearInput()">✕</button>
+                  <button class="tracker-clear" id="trackerClear" style="display:none" onclick="trackerClearInput()">&#x2715;</button>
                 </div>
                 <div class="tracker-type-toggle">
                   <button class="type-btn active" id="typeBtnCont" onclick="setTrackType('container')">Container</button>
@@ -439,16 +459,10 @@
               </div>
               <p class="tracker-hint" id="trackerHint">Carrier is detected automatically from container prefix. For B/L numbers, select carrier below.</p>
             </div>
-
-            <!-- CARRIER GRID -->
             <div class="carrier-section">
               <p class="carrier-section-label">Select carrier for B/L tracking, or track directly:</p>
-              <div class="carrier-grid" id="carrierGrid">
-                <!-- filled by JS -->
-              </div>
+              <div class="carrier-grid" id="carrierGrid"></div>
             </div>
-
-            <!-- RECENT -->
             <div class="tracker-recent" id="trackerRecent" style="display:none">
               <div class="card-header" style="margin-bottom:12px">
                 <span class="card-title">Recent Searches</span>
@@ -495,9 +509,7 @@
                 <button class="conv-tab" data-conv="cbm">CBM / RT</button>
                 <button class="conv-tab" data-conv="temp">Temperature</button>
               </div>
-              <div class="converter-body" id="converterBody">
-                <!-- Dynamically filled -->
-              </div>
+              <div class="converter-body" id="converterBody"></div>
             </div>
           </div>
         </div>
@@ -544,7 +556,7 @@
             <div class="docai-result" id="docaiResult" style="display:none">
               <div class="result-header">
                 <span id="docFileName" class="doc-filename"></span>
-                <button class="btn-ghost" onclick="resetDocAI()">✕ Clear</button>
+                <button class="btn-ghost" onclick="resetDocAI()">&#x2715; Clear</button>
               </div>
               <div class="result-body" id="docResultBody">
                 <div class="ai-thinking">
@@ -554,6 +566,18 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- HOLIDAYS PAGE -->
+        <div class="page" id="page-holidays">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">World Holidays</h1>
+              <p class="page-subtitle">Bank and national holidays worldwide — today and this week</p>
+            </div>
+            <span class="date-chip" id="holidaysDate"></span>
+          </div>
+          <div id="holidays-root"></div>
         </div>
 
         <!-- CRM PAGE -->
@@ -674,6 +698,7 @@
   </div><!-- /app -->
 
 <script src="tracker-data.js"></script>
+<script src="holidays.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

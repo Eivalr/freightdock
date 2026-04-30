@@ -11,6 +11,7 @@ const pageNames = {
   library: 'Library',
   docai: 'Doc AI',
   crm: 'CRM',
+  holidays: 'World Holidays',
   settings: 'Settings'
 };
 
@@ -319,7 +320,6 @@ function showDocResult(file) {
   result.style.display = 'block';
   document.getElementById('docFileName').textContent = file.name;
 
-  // Read file if image/PDF and call Claude API
   const reader = new FileReader();
   reader.onload = async (e) => {
     const base64 = e.target.result.split(',')[1];
@@ -612,9 +612,6 @@ function selectCarrier(code) {
   }
 }
 
-// Init tracker when page becomes visible
-const origNavigate = navigate;
-// Re-init on tracker page load
 document.querySelectorAll('.nav-item[data-page="tracker"], .tool-btn[data-page="tracker"]').forEach(el => {
   el.addEventListener('click', () => {
     setTimeout(() => {
@@ -624,7 +621,6 @@ document.querySelectorAll('.nav-item[data-page="tracker"], .tool-btn[data-page="
   });
 });
 
-// Also init if tracker is default page
 if (document.getElementById('page-tracker')?.classList.contains('active')) {
   buildCarrierGrid();
   renderRecentSearches();
